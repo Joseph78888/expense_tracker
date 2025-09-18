@@ -25,6 +25,10 @@ class _ExpensesState extends State<Expenses> {
       category: Category.leisure,
     ),
   ];
+  // model sheet
+  void _openAddExpenseOverlay() {
+    showModalBottomSheet(context: context, builder: (ctx) => Text('data'));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +36,9 @@ class _ExpensesState extends State<Expenses> {
       appBar: AppBar(
         title: Text('Expense Tracker'),
         // Add new Expense.
-        actions: [IconButton(onPressed: () {}, icon: Icon(Icons.add))],
+        actions: [
+          IconButton(onPressed: _openAddExpenseOverlay, icon: Icon(Icons.add)),
+        ],
       ),
       body: Center(
         child: Column(
