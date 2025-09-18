@@ -10,6 +10,7 @@ class Expenses extends StatefulWidget {
 }
 
 class _ExpensesState extends State<Expenses> {
+  // sample expenses
   final List<Expense> _registeredExpenses = [
     Expense(
       title: 'flutter course',
@@ -33,6 +34,7 @@ class _ExpensesState extends State<Expenses> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Text('data'),
+            // list of expenses
             Expanded(child: ExpensesList(expenses: _registeredExpenses)),
           ],
         ),

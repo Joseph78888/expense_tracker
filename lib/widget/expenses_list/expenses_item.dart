@@ -14,6 +14,7 @@ class ExpensesItem extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // list title
             Text(
               expense.title,
               style: TextStyle(
@@ -25,6 +26,7 @@ class ExpensesItem extends StatelessWidget {
             const SizedBox(height: 20),
             Row(
               children: [
+                // list amount
                 Text(
                   '\$${expense.amount.toStringAsFixed(2)}',
                   style: TextStyle(
@@ -36,10 +38,16 @@ class ExpensesItem extends StatelessWidget {
                 const Spacer(),
                 Row(
                   children: [
-                    const Icon(Icons.date_range, size: 20, color: Colors.white),
+                    // list icon
+                    Icon(
+                      categoryIcons[expense.category],
+                      color: Colors.white,
+                      size: 20,
+                    ),
                     const SizedBox(width: 10),
+                    // list date
                     Text(
-                      expense.date.toString(),
+                      expense.formattedDate,
                       style: TextStyle(color: Colors.white, fontSize: 16),
                     ),
                   ],
