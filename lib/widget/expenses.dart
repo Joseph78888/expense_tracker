@@ -10,7 +10,7 @@ class Expenses extends StatefulWidget {
 }
 
 class _ExpensesState extends State<Expenses> {
-  // sample expenses
+  // Dummy expenses
   final List<Expense> _registeredExpenses = [
     Expense(
       title: 'flutter course',
@@ -29,6 +29,11 @@ class _ExpensesState extends State<Expenses> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Expense Tracker'),
+        // Add new Expense.
+        actions: [IconButton(onPressed: () {}, icon: Icon(Icons.add))],
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
