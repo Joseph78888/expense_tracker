@@ -12,6 +12,7 @@ class _NewExpenseState extends State<NewExpense> {
   final _titleControler = TextEditingController();
   final _amountControler = TextEditingController();
   DateTime? _selectedDate;
+  Category _selectedCategory = Category.leisure;
 
   void _SelectDate() async {
     final now = DateTime.now();
@@ -84,6 +85,25 @@ class _NewExpenseState extends State<NewExpense> {
           SizedBox(height: 20),
           Row(
             children: [
+              DropdownButton(
+                value: _selectedCategory,
+                items: Category.values
+                    .map(
+                      (catrgory) => DropdownMenuItem(
+                        value: catrgory,
+                        child: Text(catrgory.name.toUpperCase()),
+                      ),
+                    )
+                    .toList(),
+                onChanged: (value) {
+                  if (value == null) {
+                    return;
+                  }
+                  setState(() {
+                    _selectedCategory = value;
+                  });
+                },
+              ),
               Spacer(),
               // Cancel Expense Button
               TextButton(
@@ -93,13 +113,7 @@ class _NewExpenseState extends State<NewExpense> {
                 child: Text('Cancel'),
               ),
               // Save Expense button
-              ElevatedButton(
-                onPressed: () {
-                  print(_titleControler.text);
-                  print(_amountControler.text);
-                },
-                child: Text('Save Expense'),
-              ),
+              ElevatedButton(onPressed: () {}, child: Text('Save Expense')),
             ],
           ),
         ],
