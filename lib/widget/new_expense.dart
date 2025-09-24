@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:expense_tracker/models/expense.dart';
 
 class NewExpense extends StatefulWidget {
   const NewExpense({super.key});
@@ -10,16 +11,20 @@ class NewExpense extends StatefulWidget {
 class _NewExpenseState extends State<NewExpense> {
   final _titleControler = TextEditingController();
   final _amountControler = TextEditingController();
+  DateTime? _selectedDate;
 
-  void _SelectDate() {
+  void _SelectDate() async {
     final now = DateTime.now();
     final firstDate = DateTime(now.year - 1, now.month, now.day);
-    showDatePicker(
+    final datePicked = await showDatePicker(
       context: context,
       initialDate: now,
       firstDate: firstDate,
       lastDate: now,
     );
+    setState(() {
+      _selectedDate = datePicked;
+    });
   }
 
   @override
@@ -42,10 +47,11 @@ class _NewExpenseState extends State<NewExpense> {
             maxLength: 50,
             decoration: InputDecoration(label: Text('Title')),
           ),
-          // expense amount
+
           Row(
             children: [
               Expanded(
+                // expense amount
                 child: TextField(
                   keyboardType: TextInputType.number,
                   controller: _amountControler,
@@ -58,10 +64,14 @@ class _NewExpenseState extends State<NewExpense> {
               Expanded(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Text('Select Date'),
-                    // SizedBox(width: 10),
+                    Text(
+                      _selectedDate == null
+                          ? 'Select Date'
+                          : formatter.format(_selectedDate!),
+                    ),
+                    SizedBox(width: 10),
                     IconButton(
                       onPressed: _SelectDate,
                       icon: Icon(Icons.calendar_month),
