@@ -8,13 +8,24 @@ class NewExpense extends StatefulWidget {
 }
 
 class _NewExpenseState extends State<NewExpense> {
-  final titleControler = TextEditingController();
-  final amountControler = TextEditingController();
+  final _titleControler = TextEditingController();
+  final _amountControler = TextEditingController();
+
+  void _SelectDate() {
+    final now = DateTime.now();
+    final firstDate = DateTime(now.year - 1, now.month, now.day);
+    showDatePicker(
+      context: context,
+      initialDate: now,
+      firstDate: firstDate,
+      lastDate: now,
+    );
+  }
 
   @override
   void dispose() {
-    titleControler.dispose();
-    amountControler.dispose();
+    _titleControler.dispose();
+    _amountControler.dispose();
     super.dispose();
   }
 
@@ -27,19 +38,40 @@ class _NewExpenseState extends State<NewExpense> {
           // add new expense
           // expense title
           TextField(
-            controller: titleControler,
+            controller: _titleControler,
             maxLength: 50,
             decoration: InputDecoration(label: Text('Title')),
           ),
           // expense amount
-          TextField(
-            keyboardType: TextInputType.number,
-            controller: amountControler,
-            decoration: InputDecoration(
-              prefixText: '\$ ',
-              label: Text('amount'),
-            ),
+          Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  keyboardType: TextInputType.number,
+                  controller: _amountControler,
+                  decoration: InputDecoration(
+                    prefixText: '\$ ',
+                    label: Text('Amount'),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text('Select Date'),
+                    // SizedBox(width: 10),
+                    IconButton(
+                      onPressed: _SelectDate,
+                      icon: Icon(Icons.calendar_month),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
+          SizedBox(height: 20),
           Row(
             children: [
               Spacer(),
@@ -53,8 +85,8 @@ class _NewExpenseState extends State<NewExpense> {
               // Save Expense button
               ElevatedButton(
                 onPressed: () {
-                  print(titleControler.text);
-                  print(amountControler.text);
+                  print(_titleControler.text);
+                  print(_amountControler.text);
                 },
                 child: Text('Save Expense'),
               ),
