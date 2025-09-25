@@ -1,9 +1,10 @@
-import 'package:expense_tracker/models/expense.dart';
 import 'package:flutter/material.dart';
+import 'package:expense_tracker/models/expense.dart';
 
+/// Widget that displays a single expense item in a styled card
 class ExpensesItem extends StatelessWidget {
-  const ExpensesItem(this.expense, {super.key});
   final Expense expense;
+  const ExpensesItem(this.expense, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,10 +15,10 @@ class ExpensesItem extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // list title
+            // Expense title
             Text(
               expense.title,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
@@ -26,10 +27,10 @@ class ExpensesItem extends StatelessWidget {
             const SizedBox(height: 20),
             Row(
               children: [
-                // list amount
+                // Expense amount
                 Text(
                   '\$${expense.amount.toStringAsFixed(2)}',
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
@@ -38,17 +39,17 @@ class ExpensesItem extends StatelessWidget {
                 const Spacer(),
                 Row(
                   children: [
-                    // list icon
+                    // Category icon
                     Icon(
                       categoryIcons[expense.category],
                       color: Colors.white,
                       size: 20,
                     ),
                     const SizedBox(width: 10),
-                    // list date
+                    // Expense date
                     Text(
                       expense.formattedDate,
-                      style: TextStyle(color: Colors.white, fontSize: 16),
+                      style: const TextStyle(color: Colors.white, fontSize: 16),
                     ),
                   ],
                 ),

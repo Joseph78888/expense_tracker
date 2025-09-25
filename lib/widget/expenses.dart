@@ -11,19 +11,22 @@ class Expenses extends StatefulWidget {
 }
 
 class _ExpensesState extends State<Expenses> {
-  // Dummy expenses
+  // List of all registered expenses
   final List<Expense> _registeredExpenses = [];
-  // model sheet
+
+  /// Opens the modal bottom sheet to add a new expense
   void _openAddExpenseOverlay() {
     showModalBottomSheet(
+      isScrollControlled: true,
       context: context,
       builder: (ctx) => NewExpense(onAddExpense: _addExpense),
     );
   }
 
-  void _addExpense(Expense expence) {
+  /// Adds a new expense to the list and updates the UI
+  void _addExpense(Expense expense) {
     setState(() {
-      _registeredExpenses.add(expence);
+      _registeredExpenses.add(expense);
     });
   }
 
@@ -31,18 +34,22 @@ class _ExpensesState extends State<Expenses> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Expense Tracker'),
-        // Add new Expense.
+        title: const Text('Expense Tracker'),
         actions: [
-          IconButton(onPressed: _openAddExpenseOverlay, icon: Icon(Icons.add)),
+          IconButton(
+            onPressed: _openAddExpenseOverlay,
+            icon: const Icon(Icons.add),
+            tooltip: 'Add Expense',
+          ),
         ],
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            // Placeholder for summary or chart
             const Text('data'),
-            // list of expenses
+            // List of expenses
             Expanded(child: ExpensesList(expenses: _registeredExpenses)),
           ],
         ),

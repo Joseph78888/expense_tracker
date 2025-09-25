@@ -5,19 +5,20 @@ import 'package:intl/intl.dart';
 const uuid = Uuid(); // unique id generator
 final formatter = DateFormat.yMd(); // date formatter
 
-// expense categories
+// Expense categories for classification
 enum Category { food, travel, leisure, work }
 
-// mapping category to icon
-const categoryIcons = {
+// Maps each category to a representative icon
+const Map<Category, IconData> categoryIcons = {
   Category.food: Icons.lunch_dining,
   Category.travel: Icons.flight,
   Category.leisure: Icons.movie,
   Category.work: Icons.work,
 };
 
-// expense model
+/// Expense model representing a single expense entry
 class Expense {
+  /// Creates an Expense with a unique id
   Expense({
     required this.title,
     required this.amount,
@@ -25,14 +26,12 @@ class Expense {
     required this.category,
   }) : id = uuid.v4();
 
-  final String id;
-  final String title;
-  final double amount;
-  final DateTime date;
-  final Category category;
+  final String id; // Unique identifier
+  final String title; // Expense title/description
+  final double amount; // Expense amount
+  final DateTime date; // Date of the expense
+  final Category category; // Category of the expense
 
-  // formatted date
-  String get formattedDate {
-    return formatter.format(date);
-  }
+  /// Returns the formatted date string for display
+  String get formattedDate => formatter.format(date);
 }
