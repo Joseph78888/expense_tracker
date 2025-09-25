@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:expense_tracker/models/expense.dart';
 
 class NewExpense extends StatefulWidget {
-  const NewExpense({super.key});
+  const NewExpense({super.key, required this.onAddExpense});
+
+  final Function(Expense expense) onAddExpense;
 
   @override
   State<NewExpense> createState() => _NewExpenseState();
@@ -14,7 +16,7 @@ class _NewExpenseState extends State<NewExpense> {
   DateTime? _selectedDate;
   Category _selectedCategory = Category.leisure;
 
-  void _SelectDate() async {
+  void _selectDate() async {
     final now = DateTime.now();
     final firstDate = DateTime(now.year - 1, now.month, now.day);
     final datePicked = await showDatePicker(
@@ -26,6 +28,48 @@ class _NewExpenseState extends State<NewExpense> {
     setState(() {
       _selectedDate = datePicked;
     });
+  }
+
+  void _submitExpenceData() {
+    final enteredAmount = double.tryParse(
+      _amountControler.text,
+    ); // convert string to double and return null if string is not numbers
+    final inValidAmount =
+        enteredAmount == null ||
+        enteredAmount <= 0; // return True if enteredAmount == null
+
+    if (_titleControler.text.trim().isEmpty ||
+        inValidAmount ||
+        _selectedDate == null) {
+      showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: const Text('Invalid Input'),
+          content: Text(
+            'Please make sure a valid title, amount, date and category was entered.',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(ctx);
+              },
+              child: Text('Okay'),
+            ),
+          ],
+        ),
+      );
+      return;
+    }
+
+    widget.onAddExpense(
+      Expense(
+        title: _titleControler.text.trim(),
+        amount: enteredAmount,
+        date: _selectedDate!,
+        category: _selectedCategory,
+      ),
+    );
+    Navigator.pop(context);
   }
 
   @override
@@ -74,7 +118,7 @@ class _NewExpenseState extends State<NewExpense> {
                     ),
                     SizedBox(width: 10),
                     IconButton(
-                      onPressed: _SelectDate,
+                      onPressed: _selectDate,
                       icon: Icon(Icons.calendar_month),
                     ),
                   ],
@@ -82,7 +126,7 @@ class _NewExpenseState extends State<NewExpense> {
               ),
             ],
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           Row(
             children: [
               DropdownButton(
@@ -104,7 +148,7 @@ class _NewExpenseState extends State<NewExpense> {
                   });
                 },
               ),
-              Spacer(),
+              const Spacer(),
               // Cancel Expense Button
               TextButton(
                 onPressed: () {
@@ -113,7 +157,10 @@ class _NewExpenseState extends State<NewExpense> {
                 child: Text('Cancel'),
               ),
               // Save Expense button
-              ElevatedButton(onPressed: () {}, child: Text('Save Expense')),
+              ElevatedButton(
+                onPressed: _submitExpenceData,
+                child: Text('Save Expense'),
+              ),
             ],
           ),
         ],
