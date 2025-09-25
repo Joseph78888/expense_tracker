@@ -1,3 +1,55 @@
+/// A modal bottom-sheet widget that provides a form for creating a new
+/// Expense item.
+///
+/// The widget collects the following inputs from the user:
+/// - Title: single-line text input (max length 50).
+/// - Amount: numeric input (parsed to double, must be > 0).
+/// - Date: selected via a date picker (allowed range: one year ago through today).
+/// - Category: chosen from the available `Category.values`.
+///
+/// Validation:
+/// - Title must be non-empty after trimming.
+/// - Amount must be a valid number greater than zero.
+/// - A date must be selected.
+///
+/// Behavior:
+/// - On successful validation, constructs an [Expense] and invokes the
+///   provided [onAddExpense] callback, then closes the modal (pops the route).
+/// - On validation failure, shows an [AlertDialog] describing the required fields.
+///
+/// Typical usage:
+/// - Present this widget inside `showModalBottomSheet` and provide an
+///   `onAddExpense` callback to receive the created [Expense].
+///
+/// Parameters:
+/// - [onAddExpense]: required callback invoked with the newly created [Expense].
+///
+/// Note:
+/// - This widget manages `TextEditingController` instances and disposes them
+///   in its `dispose` lifecycle method to avoid memory leaks.
+///
+/// See also:
+/// - [Expense] (model used to construct the object passed to [onAddExpense]).
+/// - [Category] (enumeration used to populate the category dropdown).
+///
+///
+/// State internals (implementation notes)
+/// --------------------------------------
+/// The state object:
+/// - Holds `_titleControler` and `_amountControler` for the text fields.
+/// - Tracks `_selectedDate` (nullable) and `_selectedCategory`.
+/// - Provides `_selectDate()` to show a constrained date picker and update state.
+/// - Provides `_submitExpenceData()` which:
+///   1. Parses and validates inputs.
+///   2. Shows an error dialog on invalid input.
+///   3. Calls `widget.onAddExpense(...)` with a validated [Expense] on success.
+///   4. Closes the modal with `Navigator.pop`.
+/// - Disposes controllers in `dispose()` to free resources.
+///
+/// Accessibility & UX:
+/// - Date display updates to show the chosen date or a 'Select Date' prompt.
+/// - Category dropdown displays categories using `category.name.toUpperCase()`.
+/// - Action buttons include 'Cancel' (closes modal) and 'Save Expense' (attempts submit).
 // Widget for adding a new expense via a modal bottom sheet
 import 'package:flutter/material.dart';
 import 'package:expense_tracker/models/expense.dart';

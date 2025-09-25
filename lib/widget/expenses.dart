@@ -1,3 +1,66 @@
+/// Expenses
+///
+/// A stateful widget that manages and displays a collection of user
+/// expenses. This widget is responsible for:
+/// - Holding the list of registered expenses.
+/// - Showing a modal bottom sheet to add a new expense.
+/// - Rendering the list of expenses or a placeholder message when empty.
+/// - Allowing removal of an expense with an option to undo via a SnackBar.
+///
+/// Usage:
+/// - Place `Expenses()` inside your widget tree (usually as a page/screen).
+/// - Tap the AppBar "+" action to open the add-expense modal.
+/// - The add-expense form should call the provided callback to add an expense.
+///
+/// The visual layout:
+/// - AppBar with title "Expense Tracker" and an action button to add an expense.
+/// - Body contains a placeholder area for a summary/chart and an expandable
+///   area that shows the list of expenses (or a "no expenses" message).
+///
+/// Notes:
+/// - This widget uses an internal List<Expense> to track items and calls
+///   setState(...) to trigger UI updates when items are added or removed.
+/// - Deletions are accompanied by a SnackBar containing an "Undo" action that
+///   reinserts the removed expense at its original index if requested.
+///
+/// _ExpensesState
+///
+/// Internal state for `Expenses` that encapsulates behavior and data:
+///
+/// Fields:
+/// - `_registeredExpenses`:
+///   The list of currently stored Expense objects. Initialized with a single
+///   example expense so the UI has content during development. Replace or
+///   initialize as needed for production.
+///
+/// Methods:
+/// - `_openAddExpenseOverlay()`:
+///   Opens a modal bottom sheet (isScrollControlled: true) to present the
+///   `NewExpense` widget. The `NewExpense` widget is expected to call the
+///   provided `onAddExpense` callback with a new `Expense` instance when the
+///   user submits the form.
+///
+/// - `_addExpense(Expense expense)`:
+///   Adds the given expense to `_registeredExpenses` and calls `setState` to
+///   update the UI. This method is intended to be passed to the add-expense
+///   form as the completion callback.
+///
+/// - `_removeExpense(Expense expense)`:
+///   Removes the given expense from `_registeredExpenses`. Before removal the
+///   method captures the expense's index so it can be restored if the user
+///   taps "Undo" on the SnackBar. After removing the item it shows a SnackBar
+///   with a 3-second duration and an "Undo" action that re-inserts the
+///   expense at its original index when pressed. Existing SnackBars are cleared
+///   before showing the new one to avoid stacking messages.
+///
+/// Widget build behavior:
+/// - When `_registeredExpenses` is empty, the UI shows a centered text
+///   prompting the user to add expenses.
+/// - When the list contains items, it delegates rendering to `ExpensesList`,
+///   passing the list and the `_removeExpense` callback so individual list
+///   items can request removal.
+/// - The body layout uses a Column with a placeholder Text for summary/chart
+///   content and an Expanded area that hosts the list or placeholder message.
 import 'package:expense_tracker/widget/expenses_list/expenses_list.dart';
 import 'package:expense_tracker/models/expense.dart';
 import 'package:expense_tracker/widget/new_expense.dart';
