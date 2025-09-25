@@ -12,7 +12,14 @@ class Expenses extends StatefulWidget {
 
 class _ExpensesState extends State<Expenses> {
   // List of all registered expenses
-  final List<Expense> _registeredExpenses = [];
+  final List<Expense> _registeredExpenses = [
+    Expense(
+      title: 'title',
+      amount: 99.99,
+      date: DateTime.now(),
+      category: Category.food,
+    ),
+  ];
 
   /// Opens the modal bottom sheet to add a new expense
   void _openAddExpenseOverlay() {
@@ -30,14 +37,44 @@ class _ExpensesState extends State<Expenses> {
     });
   }
 
+  /// remove Expense from the list and update the UI
   void _removeExpense(Expense expense) {
+    final expenseIndex = _registeredExpenses.indexOf(expense);
     setState(() {
       _registeredExpenses.remove(expense);
     });
+    // show undo message when deleting an expense
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        duration: Duration(seconds: 3),
+        content: Text('expense deleted!'),
+        action: SnackBarAction(
+          label: 'Undo',
+          onPressed: () {
+            setState(() {
+              _registeredExpenses.insert(expenseIndex, expense);
+            });
+          },
+        ),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    // message that shown if no expense found
+    Widget mainContent = const Center(
+      child: Text('No Expenese found!. please add some.'),
+    );
+
+    /// check if there is a _registeredExpenses found
+    if (_registeredExpenses.isNotEmpty) {
+      mainContent = ExpensesList(
+        expenses: _registeredExpenses,
+        onRemoveExpense: _removeExpense,
+      );
+    }
     return Scaffold(
       appBar: AppBar(
         title: const Text('Expense Tracker'),
@@ -56,12 +93,7 @@ class _ExpensesState extends State<Expenses> {
             // Placeholder for summary or chart
             const Text('data'),
             // List of expenses
-            Expanded(
-              child: ExpensesList(
-                expenses: _registeredExpenses,
-                onRemoveExpense: _removeExpense,
-              ),
-            ),
+            Expanded(child: mainContent),
           ],
         ),
       ),
