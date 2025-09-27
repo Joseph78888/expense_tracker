@@ -1,5 +1,60 @@
 /// Expenses
 ///
+/// A stateful widget that manages and displays a collection of user expenses.
+/// This widget is responsible for:
+/// - Holding an internal list of `Expense` objects.
+/// - Presenting a modal bottom sheet to add a new expense.
+/// - Rendering a summary/chart area and a scrollable list of expenses.
+/// - Allowing items to be removed with a transient SnackBar that offers an
+///   "Undo" action to restore the deleted entry.
+///
+/// Behavior and responsibilities:
+/// - The widget maintains its own mutable list of expenses in state and uses
+///   `setState` to trigger UI updates when items are added or removed.
+/// - When the list is empty, a centered placeholder message prompts the user
+///   to add expenses. When the list contains items, an `ExpensesList` widget
+///   is used to render them.
+/// - A `Chart` (or similar summary) receives the current expenses and is shown
+///   above the list to give a quick overview of the data.
+/// - Tapping the AppBar "+" action opens a modal bottom sheet (scroll
+///   controlled) that is expected to contain a `NewExpense` form. The form
+///   must call the provided `onAddExpense` callback with a new `Expense` to
+///   add it to the list.
+///
+/// Public interactions / callbacks:
+/// - The add-expense overlay is opened through a method that calls
+///   `showModalBottomSheet(..., isScrollControlled: true, ...)` and passes a
+///   callback to the `NewExpense` widget to receive the newly created
+///   `Expense`.
+/// - The removal path records the index of the removed item, removes it from
+///   the list, and then shows a `SnackBar` (3s) with an "Undo" action. If the
+///   user taps "Undo", the expense is re-inserted at its original index,
+///   preserving order.
+///
+/// UX considerations:
+/// - Existing SnackBars are cleared before showing a new one so messages do
+///   not stack.
+/// - The modal bottom sheet is scroll controlled to accommodate the on-screen
+///   keyboard and larger content when adding a new expense.
+///
+/// Integration notes:
+/// - `NewExpense` is expected to accept a callback of type `(Expense) -> void`
+///   that will be used to add the created expense to this widget's state.
+/// - `ExpensesList` should accept the current list of expenses and a removal
+///   callback so individual list items can request deletion.
+/// - `Chart` should accept the current expenses to compute and display a
+///   summary or visualization.
+///
+/// Example usage:
+/// - Place `Expenses()` in your widget tree (e.g., as the body of a Scaffold
+///   for a single-screen app). Use the AppBar action to add expenses and tap
+///   list items' delete controls to remove them (with optional undo).
+///
+/// Implementation details:
+/// - Stateful behavior is encapsulated in the corresponding `_ExpensesState`,
+///   which manages the `_registeredExpenses` list and the helper methods for
+///   opening the add-expense overlay, adding an expense, and removing an
+///   expense with undo support.
 /// A stateful widget that manages and displays a collection of user
 /// expenses. This widget is responsible for:
 /// - Holding the list of registered expenses.
@@ -61,6 +116,7 @@
 ///   items can request removal.
 /// - The body layout uses a Column with a placeholder Text for summary/chart
 ///   content and an Expanded area that hosts the list or placeholder message.
+import 'package:expense_tracker/widget/chart/chart.dart';
 import 'package:expense_tracker/widget/expenses_list/expenses_list.dart';
 import 'package:expense_tracker/models/expense.dart';
 import 'package:expense_tracker/widget/new_expense.dart';
@@ -154,7 +210,7 @@ class _ExpensesState extends State<Expenses> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             // Placeholder for summary or chart
-            const Text('data'),
+            Chart(expenses: _registeredExpenses),
             // List of expenses
             Expanded(child: mainContent),
           ],
