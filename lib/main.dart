@@ -24,53 +24,116 @@
 import 'package:expense_tracker/widget/expenses.dart';
 import 'package:flutter/material.dart';
 
-var kColorScheme = ColorScheme.fromSeed(
-  seedColor: const Color.fromARGB(255, 68, 68, 68),
+final kLightColorScheme = ColorScheme.fromSeed(
+  seedColor: const Color(0xFF2D61FF), // bright indigo
 );
-var kDarkColorScheme = ColorScheme.fromSeed(seedColor: Colors.blueAccent);
-
-// Entry point of the Expense Tracker app
+final kDarkColorScheme = ColorScheme.fromSeed(
+  seedColor: const Color(0xFF9C7AFF), // soft purple for dark mode
+  brightness: Brightness.dark,
+);
 
 void main() {
-  // Run the app with Expenses as the home screen
   runApp(
     MaterialApp(
+      // Use modern Material 3 design and polished component styles
       darkTheme: ThemeData.dark().copyWith(
-        brightness: Brightness.dark,
+        useMaterial3: true,
         colorScheme: kDarkColorScheme,
-        cardTheme: const CardThemeData().copyWith(
-          color: kDarkColorScheme.secondaryContainer,
-          margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        appBarTheme: AppBarTheme(
+          backgroundColor: kDarkColorScheme.surfaceVariant,
+          foregroundColor: kDarkColorScheme.onSurfaceVariant,
+          elevation: 0,
+          centerTitle: true,
+          titleTextStyle: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
+            color: kDarkColorScheme.onSurfaceVariant,
+          ),
+        ),
+        cardTheme: CardThemeData(
+          color: kDarkColorScheme.surface,
+          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          elevation: 2,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
             backgroundColor: kDarkColorScheme.primaryContainer,
             foregroundColor: kDarkColorScheme.onPrimaryContainer,
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
           ),
+        ),
+        inputDecorationTheme: InputDecorationTheme(
+          filled: true,
+          fillColor: kDarkColorScheme.surfaceVariant,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide.none,
+          ),
+        ),
+        textTheme: ThemeData.dark().textTheme.copyWith(
+          titleLarge: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
+            color: kDarkColorScheme.onSurface,
+          ),
+          bodyLarge: TextStyle(color: kDarkColorScheme.onSurface, fontSize: 16),
         ),
       ),
       theme: ThemeData().copyWith(
-        // scaffoldBackgroundColor: Colors.black,
-        colorScheme: kColorScheme,
-        appBarTheme: const AppBarTheme().copyWith(
-          backgroundColor: kColorScheme.onPrimaryContainer,
-          foregroundColor: kColorScheme.primaryContainer,
+        useMaterial3: true,
+        colorScheme: kLightColorScheme,
+        appBarTheme: AppBarTheme(
+          backgroundColor: kLightColorScheme.primaryContainer,
+          foregroundColor: kLightColorScheme.onPrimaryContainer,
+          elevation: 0,
+          centerTitle: true,
+          titleTextStyle: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
+            color: kLightColorScheme.onPrimaryContainer,
+          ),
         ),
-        cardTheme: const CardThemeData().copyWith(
-          color: kColorScheme.secondaryContainer,
-          margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        cardTheme: CardThemeData(
+          color: kLightColorScheme.surface,
+          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          elevation: 2,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-            backgroundColor: kColorScheme.primaryContainer,
+            backgroundColor: kLightColorScheme.primary,
+            foregroundColor: kLightColorScheme.onPrimary,
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
+        ),
+        inputDecorationTheme: InputDecorationTheme(
+          filled: true,
+          fillColor: kLightColorScheme.surfaceVariant,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide.none,
           ),
         ),
         textTheme: ThemeData().textTheme.copyWith(
           titleLarge: TextStyle(
-            fontWeight: FontWeight.normal,
-            color: kColorScheme
-                .onSecondaryContainer, // can't update because it set on appBar
             fontSize: 18,
+            fontWeight: FontWeight.w600,
+            color: kLightColorScheme.onSurface,
+          ),
+          bodyLarge: TextStyle(
+            fontSize: 16,
+            color: kLightColorScheme.onSurface,
           ),
         ),
       ),
