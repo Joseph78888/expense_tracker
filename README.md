@@ -1,55 +1,72 @@
-# Expense Tracker
 
-A small, in-progress expense tracking application to record and analyze personal or project expenses.
+# Expense Tracker (Flutter)
 
-Status: In development — minimal viable features implemented.
+A simple, modern Flutter app for tracking personal expenses. Add, view, and manage your expenses with a clean UI and Material 4 design.
 
-## Features (so far)
-- Add an expense: date, amount, category, optional note
-- Edit and delete expenses
-- List and search expenses (by date range and category)
-- Monthly and date-range totals / simple summary
-- Data persistence across runs (local file / database)
-- CSV import/export for backups and bulk edits
-- Basic automated tests for core logic
+## Features
+- Add new expenses with title, amount, date, and category
+- View expenses in a scrollable list
+- Delete expenses with undo (SnackBar)
+- Category icons and color-coded cards
+- Responsive modal bottom sheet for adding expenses
+- Summary chart (placeholder for future analytics)
+- Modern Material 4 theming (light/dark)
 
-## Quick start
-1. Clone the repo
-    git clone https://github.com/yourname/expense_tracker.git
-2. Install dependencies
-    - Replace with your environment's install steps (pip/npm/etc.)
-3. Initialize storage (if required)
-    - e.g. run migrations or create the local data file
-4. Run the app
-    - Replace with the project's start command (CLI/web server)
+## Getting Started
 
-## Example usage
-- Add an expense:
-  expense add --date 2025-09-01 --amount 12.50 --category Food --note "Lunch"
-- List expenses for September:
-  expense list --from 2025-09-01 --to 2025-09-30
-- Export CSV:
-  expense export --file september.csv
+1. **Clone the repository**
+   ```sh
+   git clone https://github.com/Joseph78888/expense_tracker.git
+   cd expense_tracker
+   ```
+2. **Install dependencies**
+   ```sh
+   flutter pub get
+   ```
+3. **Run the app**
+   ```sh
+   flutter run
+   ```
+   You can run on Android, iOS, web, Windows, macOS, or Linux (see Flutter docs for setup).
 
-(Adjust commands to match the actual CLI or UI implemented in this repo.)
+## Project Structure
+```
+lib/
+  main.dart                # App entry point, theming, root widget
+  models/expense.dart      # Expense model, category enum, icon mapping
+  widget/
+    expenses.dart          # Main screen, expense list, add/remove logic
+    new_expense.dart       # Modal form for adding expenses
+    expenses_list/
+      expenses_list.dart   # Scrollable list of expenses (Dismissible)
+      expenses_item.dart   # Card widget for a single expense
+    chart/                 # (Optional) Chart widget for summary/analytics
+```
 
-## Development
-- Run tests: replace with actual test command (e.g. pytest)
-- Code style: follow the project's linter/configuration
-- Open a PR for new features or bug fixes; include tests and notes
+## Usage
+- Tap the "+" button in the AppBar to add a new expense.
+- Fill out the form and tap "Save Expense".
+- Swipe left/right on an expense to delete it (with undo option).
+- View your expenses grouped by category and date.
 
-## TODO / Planned
-- Budget tracking and alerts
-- Charts and visual reports (monthly trends)
-- User accounts and syncing across devices
-- Improved importers (bank CSV formats)
+## Dependencies
+- [Flutter](https://flutter.dev/) (SDK >= 3.9.0)
+- [uuid](https://pub.dev/packages/uuid) for unique expense IDs
+- [intl](https://pub.dev/packages/intl) for date formatting
 
-## Contributing
-- Fork the repo, create feature branch, open a PR with a clear description.
-- Keep commits small and focused.
+## Customization & Extending
+- Add more categories or icons in `models/expense.dart`
+- Implement charts/analytics in `widget/chart/`
+- Add persistent storage (e.g. SQLite, Hive) for saving expenses
+- Improve UI/UX with animations, filters, or search
+
+## Development & Contributing
+- Code style: Follows recommended Flutter lints
+- To contribute: Fork, create a feature branch, open a PR
+- Please include clear commit messages and test your changes
 
 ## License
-Specify a license (e.g. MIT) in LICENSE.md
+MIT (or specify in LICENSE.md)
 
 ---
-Update the placeholders (install, run, test commands, and storage details) to match the actual project implementation.
+For questions or suggestions, open an issue or discussion on GitHub.
