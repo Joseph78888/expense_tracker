@@ -25,8 +25,9 @@ import 'package:expense_tracker/widget/expenses.dart';
 import 'package:flutter/material.dart';
 
 var kColorScheme = ColorScheme.fromSeed(
-  seedColor: const Color.fromARGB(255, 32, 30, 30),
+  seedColor: const Color.fromARGB(255, 68, 68, 68),
 );
+var kDarkColorScheme = ColorScheme.fromSeed(seedColor: Colors.blueAccent);
 
 // Entry point of the Expense Tracker app
 
@@ -34,6 +35,20 @@ void main() {
   // Run the app with Expenses as the home screen
   runApp(
     MaterialApp(
+      darkTheme: ThemeData.dark().copyWith(
+        brightness: Brightness.dark,
+        colorScheme: kDarkColorScheme,
+        cardTheme: const CardThemeData().copyWith(
+          color: kDarkColorScheme.secondaryContainer,
+          margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: kDarkColorScheme.primaryContainer,
+            foregroundColor: kDarkColorScheme.onPrimaryContainer,
+          ),
+        ),
+      ),
       theme: ThemeData().copyWith(
         // scaffoldBackgroundColor: Colors.black,
         colorScheme: kColorScheme,
@@ -60,6 +75,7 @@ void main() {
         ),
       ),
       debugShowCheckedModeBanner: false, // Remove debug banner
+      themeMode: ThemeMode.system, // default
       home: Expenses(),
     ),
   );
